@@ -9,6 +9,7 @@ public class Player extends GameObject {
      * TODO:
      * - simplify & gather jumping mechanics into one place
      *      - falling speed from linear to gradual
+     * - set movement speed to increase gradually, too
      * - set parameters by input? At least:
      *      - speed
      *      - gravity

@@ -74,6 +74,7 @@ public class Platformer01 implements Runnable {
             if (deltaLoop > desiredDeltaLoop) {
                 //Do nothing. We are already late.
             } else {
+                System.out.println("PERSEEEEE!");
                 try {
                     Thread.sleep((desiredDeltaLoop - deltaLoop) / (1000 * 1000));
                 } catch (InterruptedException e) {

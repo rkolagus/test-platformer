@@ -11,6 +11,11 @@ public class Level {
      * 
      * - fix SubArea array size
      * - set CollisionCheck to subAreas intersecting with player
+     * - move methods to appropriate classes
+     * - optimize. It slows down by the block
+     * - scrolling by player position
+     * - level exits
+     * - collectibles
      * 
      */
 
@@ -66,11 +71,11 @@ public class Level {
                 for (GameObject gameObject : subArea.objects) {
                     gameObject.render(g);
                 }
+                if (subArea.overlapsWithObject(player)){
+                    subArea.renderBounds(g);
+                }
             }
         }
-        /*for (GameObject object : subAreas[2][4].objects){
-            object.render(g);
-        }*/
         player.render(g);
     }
     
@@ -79,25 +84,13 @@ public class Level {
         player.isSupported = false;
         for (int a = 0; a < subAreas.length; a++) {
             for (int b = 0; b < subAreas[a].length; b++) {
-
                 for (GameObject gameObject : subAreas[b][a].objects) {
-                    gameObject.update();
+                    //gameObject.update();
                     CollisionCheck.playerCheck(this.player, gameObject);
                 }
 
             }
         }
-        /*for (LevelSubArea[] subAreaRow : subAreas) {
-            for (LevelSubArea subArea : subAreaRow) {
-                if (subArea.overlapsWithObject(player)) {
-                    for (GameObject gameObject : subArea.objects) {
-                        gameObject.update();
-                        CollisionCheck.playerCheck(this.player, gameObject);
-                    }
-                }
-            }
-        }*/
-        
         player.update();
     }
 }
