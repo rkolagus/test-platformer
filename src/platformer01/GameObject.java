@@ -10,6 +10,7 @@ public abstract class GameObject {
     Image image;
     Vector2D size,
             location,
+            spawnpoint,
             movementDirection,
             targetLocation,
             gravity;
@@ -24,16 +25,15 @@ public abstract class GameObject {
     
     Float jumpspeed = 0.0f;
     int jumpPhase = 0, jumpLimit = 10;
-    Polygon polygon;
 
     public GameObject(Image image, Vector2D size, Vector2D location) {
         this.image = image;
         this.size = size;
         this.location = location;
+        this.spawnpoint = location;
         this.movementDirection = new Vector2D(0.0f, 0.0f);
         this.targetLocation = location;
         this.gravity = new Vector2D(0.0f, 0.0f);
-        this.polygon = null;
     }
     
     public GameObject(Image image, Vector2D size, Vector2D location, boolean isImmovable){
@@ -47,19 +47,6 @@ public abstract class GameObject {
     public void render(Graphics g){
         g.drawImage(image, this.location.x.intValue(), this.location.y.intValue(),
                 this.size.x.intValue(), this.size.y.intValue(), null);
-        if (this.isImmovable == false && this.polygon != null) {
-            if (g.getColor() != Color.red) {
-                g.setColor(Color.red);
-            }
-            //g.drawPolygon(polygon);
-        }
-    }
-    
-    private void updatePolygon(){
-        polygon = new Polygon();
-        for (Vector2D vector : VectorArea.objectPathToVectors(this)){
-            polygon.addPoint(vector.x.intValue(), vector.y.intValue());
-        }
     }
     
     public boolean contains(Vector2D vector){
@@ -90,9 +77,6 @@ public abstract class GameObject {
             }
             this.updateTargetLocation();
             this.location = this.targetLocation;
-            /*if (this.isSupported){
-                this.jumpingPeaked = false;
-            }*/
         }
     }
     

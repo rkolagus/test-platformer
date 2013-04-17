@@ -2,6 +2,7 @@
 package platformer01;
 
 import java.awt.Image;
+import java.awt.Rectangle;
 
 public class Player extends GameObject {
     
@@ -17,7 +18,7 @@ public class Player extends GameObject {
     
     Float speed = 5.0f, blockHeight = -3.0f;
     boolean hasJumped = false;
-
+    Rectangle potentialArea;
     
     public Player(Image image, Vector2D size, Vector2D location){
         super(image, size, location);
@@ -26,6 +27,17 @@ public class Player extends GameObject {
         this.isImmovable = false;
         this.isSprinting = false;
         this.jumpspeed = 2.0f;
+        this.potentialArea = new Rectangle((this.location.x.intValue() - this.speed.intValue() * 2), 
+                                           (this.location.y.intValue() - this.gravity.y.intValue()),
+                                           (this.size.x.intValue() + this.speed.intValue() * 4),
+                                           (this.size.y.intValue() + this.gravity.y.intValue() * 2));
+    }
+    
+    public void updatePotentialArea(){
+        this.potentialArea = new Rectangle((this.location.x.intValue() - this.speed.intValue() * 2), 
+                                           (this.location.y.intValue() - this.gravity.y.intValue()),
+                                           (this.size.x.intValue() + this.speed.intValue() * 4),
+                                           (this.size.y.intValue() + this.gravity.y.intValue() * 2));
     }
     
     public void move(Controls controls){
@@ -49,7 +61,8 @@ public class Player extends GameObject {
             this.jumpingPeaked = true;
             this.jumpPhase = this.jumpLimit;
         }
-        // if (controls.keyPressedDuck) {}
+        if (controls.keyPressedDuck) {
+        }
         if (controls.keyPressedSprint) {
             this.isSprinting = true;
         } else {

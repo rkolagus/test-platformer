@@ -11,10 +11,6 @@ import java.io.IOException;
 import java.util.Scanner;
 import javax.imageio.ImageIO;
 
-/**
- *
- * @author Lagus RKO
- */
 public class LevelFileReader {
     
     final static char char_block_01 = 'x';
@@ -42,12 +38,12 @@ public class LevelFileReader {
                 if (line.contains("" + 1)){
                     level.spawnpoint = new Vector2D(line.indexOf("1") * 32, lineNumber * 32);
                 }
-                /* TODO - simplify this */
                 
                 while (line.substring(lineIndex).contains("" + char_block_01) && lineIndex < line.length()) {
                     lineIndex = line.indexOf(char_block_01, lineIndex);
-                    level.subAreas[lineIndex / 4][lineNumber / 4].objects.add(new Block(image_block_01, new Vector2D(image_block_01.getWidth(),
+                    level.subAreaList.get(lineNumber / 4).get(lineIndex / 4).objects.add(new Block(image_block_01, new Vector2D(image_block_01.getWidth(),
                             image_block_01.getHeight()), new Vector2D(32 * lineIndex, 32 * lineNumber)));
+
                     lineIndex++;
                 }
                 lineNumber++;

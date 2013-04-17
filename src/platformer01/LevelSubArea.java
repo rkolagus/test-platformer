@@ -27,17 +27,16 @@ public class LevelSubArea {
                                        this.size.x.intValue(), this.size.y.intValue());
     }
     
-    public void addObject(GameObject o){
-        this.objects.add(o);
-    }
-    
-    public boolean overlapsWithObject(GameObject o){
-        Rectangle oArea = new Rectangle(o.location.x.intValue(), o.location.y.intValue(), 
-                                        o.size.x.intValue(), o.size.y.intValue());
-        if (this.area.intersects(oArea)){
+    public final boolean overlaps(Rectangle r) {
+        if (this.area.intersects(r)) {
             return true;
         }
         return false;
+    }
+    public final boolean overlaps(GameObject o){
+        Rectangle r = new Rectangle(o.location.x.intValue(), o.location.y.intValue(), 
+                                        o.size.x.intValue(), o.size.y.intValue());
+        return this.overlaps(r);
     }
     
     public void renderBounds(Graphics g){
