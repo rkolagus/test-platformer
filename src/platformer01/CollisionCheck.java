@@ -19,7 +19,8 @@ public class CollisionCheck {
         /* Collision to the left */
         if ((gameObject.contains(player.getLowerLeftCorner().addToX(-1.0f))
                 && gameObject.contains(player.getLowerLeftCorner().addToX(-1.0f).addToY(player.blockHeight)))
-                || gameObject.contains(player.getUpperLeftCorner().addToX(-1.0f))) {
+                || gameObject.contains(player.getUpperLeftCorner().addToX(-1.0f))
+                && !(gameObject.contains(player.getUpperRightCorner().addToY(-1.0f)))) {
             player.isLeftBlocked = true;
             player.targetLocation.x = gameObject.getLowerRightCorner().x + 1.0f;
         }
@@ -27,7 +28,8 @@ public class CollisionCheck {
         /* Collision to the right */
         if ((gameObject.contains(player.getLowerRightCorner().addToX(1.0f))
                 && gameObject.contains(player.getLowerRightCorner().addToX(1.0f).addToY(player.blockHeight)))
-                || gameObject.contains(player.getUpperRightCorner().addToX(1.0f))) {
+                || (gameObject.contains(player.getUpperRightCorner().addToX(1.0f)) 
+                && !(gameObject.contains(player.getUpperLeftCorner().addToY(-1.0f))))) {
             player.isRightBlocked = true;
             player.targetLocation.x = gameObject.getLowerLeftCorner().x - 1.0f - player.size.x;
         }
@@ -51,8 +53,5 @@ public class CollisionCheck {
             player.jumpingPeaked = true;
             player.isJumping = false;
         }
-        
-        /* Adjustments to target location here */
-        
     }
 }
