@@ -16,6 +16,7 @@ public class Player extends GameObject {
      */
     
     Float speed = 5.0f, blockHeight = -3.0f;
+    boolean hasJumped = false;
 
     
     public Player(Image image, Vector2D size, Vector2D location){
@@ -28,23 +29,27 @@ public class Player extends GameObject {
     }
     
     public void move(Controls controls){
+        
+        if (this.isSupported && this.hasJumped && controls.keyPressedJump == false){
+            this.hasJumped = false;
+        }
+        
         if (controls.direction != 0){
             this.movementDirection.x = controls.direction * speed;
         } else if (this.movementDirection.x != 0) {
             this.movementDirection.x = 0.0f;
         }
         if (controls.keyPressedJump) {
-            if (this.isSupported) {
+            if (this.isSupported && this.hasJumped == false) {
                 this.jumpingPeaked = false;
                 this.isJumping = true;
-            }
-            if (this.jumpingPeaked == false) {
+                this.hasJumped = true;
             }
         } else {
             this.jumpingPeaked = true;
             this.jumpPhase = this.jumpLimit;
         }
-        if (controls.keyPressedDuck) {}
+        // if (controls.keyPressedDuck) {}
         if (controls.keyPressedSprint) {
             this.isSprinting = true;
         } else {
