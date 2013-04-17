@@ -10,20 +10,23 @@ public class Controls implements KeyListener{
     boolean keyPressedLeft, 
             keyPressedRight, 
             keyPressedJump,
-            keyPressedDuck;
-    
-    final int keyLeft  = KeyEvent.VK_A,
-        keyRight = KeyEvent.VK_D,
-        keyJump  = KeyEvent.VK_W,
-        keyDuck  = KeyEvent.VK_S;
-    
+            keyPressedDuck,
+            keyPressedSprint;
+
+    final int keyLeft = KeyEvent.VK_A,
+            keyRight = KeyEvent.VK_D,
+            keyJump = KeyEvent.VK_W,
+            keyDuck = KeyEvent.VK_S,
+            keySprint = KeyEvent.VK_SHIFT;
+
     int direction;
     
     public Controls(){
-        keyPressedLeft  = false;
-        keyPressedRight = false;
-        keyPressedJump  = false;
-        keyPressedDuck  = false;
+        keyPressedLeft    = false;
+        keyPressedRight   = false;
+        keyPressedJump    = false;
+        keyPressedDuck    = false;
+        keyPressedSprint  = false;
         
         direction = 0;
     }
@@ -59,6 +62,9 @@ public class Controls implements KeyListener{
             case keyDuck:
                 keyPressedDuck = true;
                 break;
+            case keySprint:
+                keyPressedSprint = true;
+                break;
             default:
                 break;
         }
@@ -92,6 +98,9 @@ public class Controls implements KeyListener{
                 break;
             case keyDuck:
                 keyPressedDuck = false;
+                break;
+            case keySprint:
+                keyPressedSprint = false;
                 break;
             default:
                 break;

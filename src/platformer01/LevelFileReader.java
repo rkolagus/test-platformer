@@ -41,7 +41,6 @@ public class LevelFileReader {
                 }
                 if (line.contains("" + 1)){
                     level.spawnpoint = new Vector2D(line.indexOf("1") * 32, lineNumber * 32);
-                    System.out.println(level.spawnpoint);
                 }
                 /* TODO - simplify this */
                 

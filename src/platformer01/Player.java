@@ -21,9 +21,10 @@ public class Player extends GameObject {
     public Player(Image image, Vector2D size, Vector2D location){
         super(image, size, location);
         movementDirection = new Vector2D(0.0f, 0.0f);
-        this.gravity = new Vector2D(0.0f, 5.0f);
+        this.gravity = new Vector2D(0.0f, 10.0f);
         this.isImmovable = false;
-        this.jumpspeed = this.gravity.y / 3;
+        this.isSprinting = false;
+        this.jumpspeed = 2.0f;
     }
     
     public void move(Controls controls){
@@ -44,6 +45,11 @@ public class Player extends GameObject {
             this.jumpPhase = this.jumpLimit;
         }
         if (controls.keyPressedDuck) {}
+        if (controls.keyPressedSprint) {
+            this.isSprinting = true;
+        } else {
+            this.isSprinting = false;
+        }
         if ((this.jumpingPeaked || controls.keyPressedJump == false) && this.isSupported == false){
             this.movementDirection.y = this.gravity.y;
         }

@@ -13,13 +13,15 @@ public abstract class GameObject {
             movementDirection,
             targetLocation,
             gravity;
-    boolean isSupported, 
-            isImmovable,
+    boolean isSupported = false, 
+            isImmovable = false,
             isJumping = false,
             jumpingPeaked = true,
             isLeftBlocked = false,
             isRightBlocked = false,
-            isUpBlocked = false;
+            isUpBlocked = false,
+            isSprinting = false;
+    
     Float jumpspeed = 0.0f;
     int jumpPhase = 0, jumpLimit = 10;
     Polygon polygon;
@@ -31,8 +33,6 @@ public abstract class GameObject {
         this.movementDirection = new Vector2D(0.0f, 0.0f);
         this.targetLocation = location;
         this.gravity = new Vector2D(0.0f, 0.0f);
-        this.isSupported = false;
-        this.isImmovable = false;
         this.polygon = null;
     }
     
@@ -97,8 +97,12 @@ public abstract class GameObject {
     }
     
     public void updateTargetLocation(){
+        float sprintModifier = 1.0f;
+        if (this.isSprinting){
+            sprintModifier = 2.0f;
+        }
         if (this.isImmovable == false && this.movementDirection.x != 0 || this.movementDirection.y != 0) {
-            this.targetLocation.x += this.movementDirection.x;
+            this.targetLocation.x += this.movementDirection.x * sprintModifier;
             if (this.movementDirection.y < 0 || (this.isSupported == false && this.movementDirection.y > 0)) {
                 this.targetLocation.y += this.movementDirection.y;
             } else if (this.isSupported){
