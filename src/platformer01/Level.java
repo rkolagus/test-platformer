@@ -3,16 +3,17 @@ package platformer01;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 public class Level {
     
     /* TODO:
      * 
+     * - fix wall hugging ( = player inside block while pressing against it)
      * - fix SubArea array size
-     * - set CollisionCheck to subAreas intersecting with player
      * - move methods to appropriate classes
-     * - optimize. It slows down by the block
+     * - OPTIMIZE. It slows down by the block
      * - scrolling by player position
      * - level exits
      * - collectibles
@@ -20,7 +21,7 @@ public class Level {
      */
 
     CollisionCheck collisionCheck = new CollisionCheck();
-    LevelSubArea[][] subAreas;
+    ArrayList<ArrayList<LevelSubArea>> subAreaList;
     Player player;
     Vector2D bounds,
             subAreaSize,
@@ -37,20 +38,17 @@ public class Level {
         this.spawnpoint = new Vector2D(50, 0);
         this.exit = new Vector2D(550, 350);
         this.subAreaSize = new Vector2D(32*4, 32*4);
-        this.subAreas = new LevelSubArea[10][10];
-        int saRowIndex = 0, saColumnIndex = 0;
-        for (LevelSubArea[] subAreaRow : subAreas) {
-            
-            for (int a = 0; a < subAreaRow.length; a++) {
-                
-                Vector2D v = new Vector2D(32 * 4 * saColumnIndex, 32 * 4 * saRowIndex);
-                Vector2D v2 = new Vector2D(32 * 4 * (saColumnIndex + 1), 32 * 4 * (saRowIndex + 1));
-                subAreaRow[a] = new LevelSubArea(v, v2);
-                
-                saColumnIndex++;
+        this.subAreaList = new ArrayList<ArrayList<LevelSubArea>>();
+        
+        for (int i = 0; i < 10; i++){
+            this.subAreaList.add(new ArrayList<LevelSubArea>());
+            for (int j = 0; j < 10; j++){
+                Vector2D v = new Vector2D(32 * 4 * j, 32 * 4 * i);
+                Vector2D v2 = new Vector2D(32 * 4 * (j + 1), 32 * 4 * (i + 1));
+                this.subAreaList.get(i).add(new LevelSubArea(v, v2));
             }
-            saRowIndex++;
         }
+
         try {
             LevelFileReader.readLevelFile(levelFileName, this);
             } catch (Exception e) {
@@ -66,14 +64,17 @@ public class Level {
     }
 
     public void render(Graphics g) {
-        for (LevelSubArea[] subAreaRow : subAreas) {
-            for (LevelSubArea subArea : subAreaRow) {
-                for (GameObject gameObject : subArea.objects) {
+        for (ArrayList<LevelSubArea> areaRow : subAreaList) {
+            for (LevelSubArea area : areaRow) {
+                for (GameObject gameObject : area.objects) {
                     gameObject.render(g);
                 }
-                if (subArea.overlapsWithObject(player)){
-                    subArea.renderBounds(g);
+                /* FOR DEBUG */
+                /*
+                if (area.overlaps(player)){
+                    area.renderBounds(g);
                 }
+                */
             }
         }
         player.render(g);
@@ -82,11 +83,14 @@ public class Level {
     public void update(Controls controls){
         player.move(controls);
         player.isSupported = false;
-        for (int a = 0; a < subAreas.length; a++) {
-            for (int b = 0; b < subAreas[a].length; b++) {
-                for (GameObject gameObject : subAreas[b][a].objects) {
-                    //gameObject.update();
-                    CollisionCheck.playerCheck(this.player, gameObject);
+        player.updatePotentialArea();
+        for (ArrayList<LevelSubArea> areaColumn : subAreaList) {
+            for (LevelSubArea area: areaColumn) {
+                if (area.overlaps(player.potentialArea)) {
+                    for (GameObject gameObject : area.objects) {
+                        //gameObject.update();
+                        CollisionCheck.playerCheck(this.player, gameObject);
+                    }
                 }
 
             }
