@@ -28,8 +28,7 @@ public class Level {
     ArrayList<ArrayList<LevelSubArea>> subAreaList;
     Player player;
     LevelExit levelExit;
-    Vector2D bounds,
-            subAreaSize,
+    Vector2D subAreaSize,
             spawnpoint,
             exit;
     
@@ -45,7 +44,6 @@ public class Level {
     
     public Level(Platformer01 game, String levelFileName) throws Exception {
         this.game = game;
-        this.bounds = new Vector2D(600, 400);
         this.spawnpoint = new Vector2D(50, 0);
         this.exit = new Vector2D(-100, -100);
         this.subAreaSize = new Vector2D(32*4, 32*4);
@@ -85,33 +83,21 @@ public class Level {
     Graphics gb;
     public void render(Graphics g) {
         if (combinedImage == null){
-            combinedImage = new BufferedImage(700, 500, BufferedImage.TYPE_INT_RGB);
-            g = combinedImage.getGraphics();
+            combinedImage = new BufferedImage(800, 600, BufferedImage.TYPE_INT_RGB);
+            gb = combinedImage.getGraphics();
             int rivi = 0, indeksi = 0;
             for (ArrayList<LevelSubArea> areaRow : subAreaList) {
                 for (LevelSubArea area : areaRow) {
-                    for (GameObject gameObject : area.objects) {
-                        g.drawImage(gameObject.image, indeksi * 32, rivi * 32, null);
+                    for (GameObject object : area.objects) {
+                        gb.drawImage(object.image, object.location.x.intValue(), object.location.y.intValue(), null);
                     }
                     indeksi++;
                 }
                 rivi++;
             }
         }
-        
-        for (ArrayList<LevelSubArea> areaRow : subAreaList) {
-            for (LevelSubArea area : areaRow) {
-                for (GameObject gameObject : area.objects) {
-                    gameObject.render(g);
-                }
-                /* FOR DEBUG */
-                /*
-                if (area.overlaps(player)){
-                    area.renderBounds(g);
-                }
-                */
-            }
-        }
+        g.drawImage(combinedImage, 0, 0, null);
+
         this.levelExit.render(g);
         player.render(g);
     }
