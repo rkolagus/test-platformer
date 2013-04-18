@@ -10,6 +10,7 @@ public class Level {
     
     /* TODO:
      * 
+     * - make and use a collision map
      * - fix wall hugging ( = player inside block while pressing against it)
      * - fix SubArea array size
      * - move methods to appropriate classes
@@ -58,7 +59,7 @@ public class Level {
             BufferedImage playerImage = ImageIO.read(new File("gamedata/images/player.bmp"));
             player = new Player(playerImage, new Vector2D(playerImage.getWidth(), playerImage.getHeight()), spawnpoint);
         } catch (Exception e) {
-            throw new Exception("Player image failed to load!");
+            throw new Exception("Player image failed to load: " + e);
         }
 
     }
