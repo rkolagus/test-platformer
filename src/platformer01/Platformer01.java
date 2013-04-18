@@ -86,7 +86,6 @@ public class Platformer01 implements Runnable {
 
     protected void update(int deltaTime) {
         level.update(controls);
-        System.out.println(deltaTime);
     }
 
 
