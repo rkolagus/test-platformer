@@ -16,6 +16,7 @@ public class Player extends GameObject {
      *      - gravity
      */
     
+    /*OLD VALUES: speed = 5.0f, gravity = 10.0f, jumpspeed = 2.0f*/
     Float speed = 5.0f, blockHeight = -3.0f;
     boolean hasJumped = false;
     Rectangle potentialArea;

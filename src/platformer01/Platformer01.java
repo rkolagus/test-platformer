@@ -20,7 +20,8 @@ public class Platformer01 implements Runnable {
     final int width = 800,
             height = 600;
     long desiredFPS = 60,
-            desiredDeltaLoop = (1000 * 1000) / desiredFPS;
+            desiredDeltaLoop = (1000 * 1000 * 1000) / desiredFPS;
+    /* Desired delta loop has an extra  (* 1000) compared to original */
     boolean running = true, debugMode = true;
 
     public Platformer01() throws Exception{
@@ -74,7 +75,6 @@ public class Platformer01 implements Runnable {
             if (deltaLoop > desiredDeltaLoop) {
                 //Do nothing. We are already late.
             } else {
-                System.out.println("PERSEEEEE!");
                 try {
                     Thread.sleep((desiredDeltaLoop - deltaLoop) / (1000 * 1000));
                 } catch (InterruptedException e) {
@@ -86,7 +86,9 @@ public class Platformer01 implements Runnable {
 
     protected void update(int deltaTime) {
         level.update(controls);
+        System.out.println(deltaTime);
     }
+
 
     private void render() {
         Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();

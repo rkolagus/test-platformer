@@ -31,7 +31,6 @@ public class LevelFileReader {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 int lineIndex = 0;
-                
                 if (line.contains("end")) {
                     break;
                 }

@@ -64,7 +64,25 @@ public class Level {
 
     }
 
+    BufferedImage combinedImage;
+    Graphics gb;
     public void render(Graphics g) {
+        if (combinedImage == null){
+            combinedImage = new BufferedImage(700, 500, BufferedImage.TYPE_INT_RGB);
+            g = combinedImage.getGraphics();
+            int rivi = 0, indeksi = 0;
+            for (ArrayList<LevelSubArea> areaRow : subAreaList) {
+                for (LevelSubArea area : areaRow) {
+                    for (GameObject gameObject : area.objects) {
+                        g.drawImage(gameObject.image, indeksi * 32, rivi * 32, null);
+                        gameObject.render(g);
+                    }
+                    indeksi++;
+                }
+                rivi++;
+            }
+        }
+        
         for (ArrayList<LevelSubArea> areaRow : subAreaList) {
             for (LevelSubArea area : areaRow) {
                 for (GameObject gameObject : area.objects) {
@@ -78,6 +96,7 @@ public class Level {
                 */
             }
         }
+
         player.render(g);
     }
     
