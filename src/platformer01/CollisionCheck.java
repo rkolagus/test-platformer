@@ -1,12 +1,14 @@
 package platformer01;
 
+import objects.GameObject;
+import objects.Player;
+
 public class CollisionCheck {
 
     public static void playerCheck(Player player, GameObject gameObject) {
         
         /* TODO 
          * 
-         * - fix the combined overhead and sideways collision 
          * - set collision detection to check for player location + player speed
          * - simplify
          */
@@ -53,5 +55,12 @@ public class CollisionCheck {
             player.jumpingPeaked = true;
             player.isJumping = false;
         }
+    }
+    
+    public static boolean intersects(GameObject a, GameObject b){
+        if (a.area.intersects(b.area)){
+            return true;
+        }
+        return false;
     }
 }

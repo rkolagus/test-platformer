@@ -2,9 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package platformer01;
+package objects;
 
 import java.awt.Image;
+import platformer01.Vector2D;
 
 /**
  *
@@ -12,8 +13,8 @@ import java.awt.Image;
  */
 public class Block extends GameObject {
     
-    public Block(Image image, Vector2D size, Vector2D location){
-        super(image, size, location);
+    public Block(Image image, Vector2D location, Vector2D size){
+        super(image, location, size);
         this.isImmovable = true;
     }
     

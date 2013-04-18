@@ -9,7 +9,7 @@ package platformer01;
  * @author Lagus RKO
  */
 public class Vector2D {
-    Float x, y;
+    public Float x, y;
     
     public Vector2D(float x, float y){
         this.x = new Float(x);

@@ -1,8 +1,10 @@
 
-package platformer01;
+package objects;
 
 import java.awt.Image;
 import java.awt.Rectangle;
+import platformer01.Controls;
+import platformer01.Vector2D;
 
 public class Player extends GameObject {
     
@@ -16,13 +18,12 @@ public class Player extends GameObject {
      *      - gravity
      */
     
-    /*OLD VALUES: speed = 5.0f, gravity = 10.0f, jumpspeed = 2.0f*/
-    Float speed = 5.0f, blockHeight = -3.0f;
-    boolean hasJumped = false;
-    Rectangle potentialArea;
+    public Float speed = 5.0f, blockHeight = -3.0f;
+    public boolean hasJumped = false;
+    public Rectangle potentialArea;
     
-    public Player(Image image, Vector2D size, Vector2D location){
-        super(image, size, location);
+    public Player(Image image, Vector2D location, Vector2D size){
+        super(image, location, size);
         movementDirection = new Vector2D(0.0f, 0.0f);
         this.gravity = new Vector2D(0.0f, 10.0f);
         this.isImmovable = false;
@@ -35,10 +36,13 @@ public class Player extends GameObject {
     }
     
     public void updatePotentialArea(){
+        this.potentialArea.setLocation(this.location.x.intValue(), this.location.y.intValue());
+        /*
         this.potentialArea = new Rectangle((this.location.x.intValue() - this.speed.intValue() * 2), 
                                            (this.location.y.intValue() - this.gravity.y.intValue()),
                                            (this.size.x.intValue() + this.speed.intValue() * 4),
                                            (this.size.y.intValue() + this.gravity.y.intValue() * 2));
+        */
     }
     
     public void move(Controls controls){

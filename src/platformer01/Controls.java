@@ -7,19 +7,19 @@ import java.awt.event.KeyListener;
 
 public class Controls implements KeyListener{
     
-    boolean keyPressedLeft, 
+    public boolean keyPressedLeft, 
             keyPressedRight, 
             keyPressedJump,
             keyPressedDuck,
             keyPressedSprint;
 
-    final int keyLeft = KeyEvent.VK_A,
+    public final int keyLeft = KeyEvent.VK_A,
             keyRight = KeyEvent.VK_D,
             keyJump = KeyEvent.VK_W,
             keyDuck = KeyEvent.VK_S,
             keySprint = KeyEvent.VK_SHIFT;
 
-    int direction;
+    public int direction;
     
     public Controls(){
         keyPressedLeft    = false;

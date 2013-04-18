@@ -1,20 +1,21 @@
-package platformer01;
+package objects;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Polygon;
+import java.awt.Rectangle;
+import platformer01.Vector2D;
 
 public abstract class GameObject {
 
-    Image image;
-    Vector2D size,
+    public Image image;
+    public Vector2D size,
             location,
             spawnpoint,
             movementDirection,
             targetLocation,
             gravity;
-    boolean isSupported = false, 
+    public boolean isSupported = false, 
             isImmovable = false,
             isJumping = false,
             jumpingPeaked = true,
@@ -23,10 +24,12 @@ public abstract class GameObject {
             isUpBlocked = false,
             isSprinting = false;
     
-    Float jumpspeed = 0.0f;
-    int jumpPhase = 0, jumpLimit = 10;
+    public Rectangle area;
+    
+    public Float jumpspeed = 0.0f;
+    public int jumpPhase = 0, jumpLimit = 10;
 
-    public GameObject(Image image, Vector2D size, Vector2D location) {
+    public GameObject(Image image, Vector2D location, Vector2D size) {
         this.image = image;
         this.size = size;
         this.location = location;
@@ -34,10 +37,12 @@ public abstract class GameObject {
         this.movementDirection = new Vector2D(0.0f, 0.0f);
         this.targetLocation = location;
         this.gravity = new Vector2D(0.0f, 0.0f);
+        this.area = new Rectangle(this.location.x.intValue(), this.location.y.intValue(),
+                                  this.size.x.intValue(), this.size.y.intValue());
     }
     
-    public GameObject(Image image, Vector2D size, Vector2D location, boolean isImmovable){
-        this(image, size, location);
+    public GameObject(Image image, Vector2D location, Vector2D size, boolean isImmovable){
+        this(image, location, size);
         this.isImmovable = isImmovable;
         /*if (this.isImmovable == false){
             this.updatePolygon();
@@ -96,6 +101,10 @@ public abstract class GameObject {
         if (this.isSupported == false && this.isImmovable == false){
             this.targetLocation.addToY(this.gravity.y);
         }
+    }
+    
+    public void updateArea(){
+        this.area.setLocation(this.location.x.intValue(), this.location.y.intValue());
     }
 
     

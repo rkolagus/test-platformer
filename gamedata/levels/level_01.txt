@@ -1,4 +1,4 @@
-x                       x
+x                    2  x
 x xxxxx xxx   xxx xxxxx x
 x x   x xx   x xx x   x x
 x x   x x       x x   x x
@@ -6,7 +6,7 @@ x x   x x       x x   x x
 x           x           x
 x                       x
 x                       x
-x          x            x
+x  1       x            x
 x                       x
 x                       x
 x         x             x
@@ -14,7 +14,7 @@ x                       x
 x                       x
 x        x              x
 x           x           x
-x 1    xxxx             x
+x      xxxx             x
 x     x   x             x
 xxxxxxxxxxxxxxxxxxxxxxxxx
 end

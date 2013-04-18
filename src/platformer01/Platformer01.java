@@ -49,7 +49,7 @@ public class Platformer01 implements Runnable {
         canvas.addKeyListener(controls);
 
         canvas.requestFocus();
-        level = new Level();
+        level = new Level(this);
     }
 
     @Override
@@ -80,6 +80,9 @@ public class Platformer01 implements Runnable {
                 } catch (InterruptedException e) {
                     //Do nothing
                 }
+            }
+            if (level.completed){
+                System.exit(0);
             }
         }
     }

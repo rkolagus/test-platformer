@@ -5,6 +5,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
+import objects.GameObject;
+import objects.LevelExit;
+import objects.Player;
 
 public class Level {
     
@@ -24,20 +27,27 @@ public class Level {
     CollisionCheck collisionCheck = new CollisionCheck();
     ArrayList<ArrayList<LevelSubArea>> subAreaList;
     Player player;
+    LevelExit levelExit;
     Vector2D bounds,
             subAreaSize,
             spawnpoint,
             exit;
+    
     final String text = "Level 00 alpha";
+    
+    public boolean completed = false;
+    
+    Platformer01 game;
 
-    public Level() throws Exception{
-        this("gamedata/levels/level_01.txt");
+    public Level(Platformer01 game) throws Exception{
+        this(game, "level_01.txt");
     }
     
-    public Level(String levelFileName) throws Exception {
+    public Level(Platformer01 game, String levelFileName) throws Exception {
+        this.game = game;
         this.bounds = new Vector2D(600, 400);
         this.spawnpoint = new Vector2D(50, 0);
-        this.exit = new Vector2D(550, 350);
+        this.exit = new Vector2D(-100, -100);
         this.subAreaSize = new Vector2D(32*4, 32*4);
         this.subAreaList = new ArrayList<ArrayList<LevelSubArea>>();
         
@@ -51,16 +61,23 @@ public class Level {
         }
 
         try {
-            LevelFileReader.readLevelFile(levelFileName, this);
+            LevelFileReader.readLevelFile("gamedata/levels/" + levelFileName, this);
             } catch (Exception e) {
             throw new Exception("Level file failed to load: " + e);
         }
         try {
             BufferedImage playerImage = ImageIO.read(new File("gamedata/images/player.bmp"));
-            player = new Player(playerImage, new Vector2D(playerImage.getWidth(), playerImage.getHeight()), spawnpoint);
+            player = new Player(playerImage, spawnpoint, new Vector2D(playerImage.getWidth(), playerImage.getHeight()));
         } catch (Exception e) {
             throw new Exception("Player image failed to load: " + e);
         }
+        try {
+            BufferedImage exitImage = ImageIO.read(new File("gamedata/images/orb.png"));
+            this.levelExit = new LevelExit(exitImage, this.exit);
+        } catch (Exception e){
+            System.out.println("LevelExit image failed to load: " + e);
+        }
+        
 
     }
 
@@ -75,7 +92,6 @@ public class Level {
                 for (LevelSubArea area : areaRow) {
                     for (GameObject gameObject : area.objects) {
                         g.drawImage(gameObject.image, indeksi * 32, rivi * 32, null);
-                        gameObject.render(g);
                     }
                     indeksi++;
                 }
@@ -96,7 +112,7 @@ public class Level {
                 */
             }
         }
-
+        this.levelExit.render(g);
         player.render(g);
     }
     
@@ -104,6 +120,7 @@ public class Level {
         player.move(controls);
         player.isSupported = false;
         player.updatePotentialArea();
+        player.updateArea();
         for (ArrayList<LevelSubArea> areaColumn : subAreaList) {
             for (LevelSubArea area: areaColumn) {
                 if (area.overlaps(player.potentialArea)) {
@@ -115,6 +132,13 @@ public class Level {
 
             }
         }
+        if (CollisionCheck.intersects(player, levelExit)){
+            this.exitLevel();
+        }
         player.update();
+    }
+    
+    private void exitLevel(){
+        this.completed = true;
     }
 }

@@ -4,6 +4,7 @@
  */
 package platformer01;
 
+import objects.Block;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -34,14 +35,18 @@ public class LevelFileReader {
                 if (line.contains("end")) {
                     break;
                 }
-                if (line.contains("" + 1)){
+                if (line.contains("1")){
                     level.spawnpoint = new Vector2D(line.indexOf("1") * 32, lineNumber * 32);
+                }
+                if (line.contains("2")){
+                    level.exit = new Vector2D(line.indexOf("2") * 32, lineNumber * 32);
                 }
                 
                 while (line.substring(lineIndex).contains("" + char_block_01) && lineIndex < line.length()) {
                     lineIndex = line.indexOf(char_block_01, lineIndex);
-                    level.subAreaList.get(lineNumber / 4).get(lineIndex / 4).objects.add(new Block(image_block_01, new Vector2D(image_block_01.getWidth(),
-                            image_block_01.getHeight()), new Vector2D(32 * lineIndex, 32 * lineNumber)));
+                    level.subAreaList.get(lineNumber / 4).get(lineIndex / 4)
+                            .objects.add(new Block(image_block_01, new Vector2D(32 * lineIndex, 32 * lineNumber), 
+                            new Vector2D(image_block_01.getWidth(), image_block_01.getHeight())));
 
                     lineIndex++;
                 }
