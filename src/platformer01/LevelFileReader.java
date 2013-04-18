@@ -4,13 +4,13 @@
  */
 package platformer01;
 
-import objects.Block;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 import javax.imageio.ImageIO;
+import objects.Block;
 
 public class LevelFileReader {
     

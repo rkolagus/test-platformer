@@ -17,6 +17,9 @@ public class Platformer01 implements Runnable {
     Controls controls;
     Level level;
     
+    int levelCounter;
+    final String levelNames[] = {"level_01.txt", 
+                                 "level_02.txt"};
     final int width = 800,
             height = 600;
     long desiredFPS = 60,
@@ -25,7 +28,7 @@ public class Platformer01 implements Runnable {
     boolean running = true, debugMode = true;
 
     public Platformer01() throws Exception{
-        frame = new JFrame("Shameless Clone for now");
+        frame = new JFrame("Shameless Clone");
 
         JPanel panel = (JPanel) frame.getContentPane();
         panel.setPreferredSize(new Dimension(width, height));
@@ -49,6 +52,7 @@ public class Platformer01 implements Runnable {
         canvas.addKeyListener(controls);
 
         canvas.requestFocus();
+        levelCounter = 0;
         level = new Level(this);
     }
 
@@ -82,7 +86,17 @@ public class Platformer01 implements Runnable {
                 }
             }
             if (level.completed){
-                System.exit(0);
+                levelCounter++;
+                try {
+                    if (levelCounter < levelNames.length){
+                    level = new Level(this, levelNames[levelCounter]);
+                    } else {
+                        System.exit(0);
+                    }
+                } catch (Exception e) {
+                    System.out.println("No more levels found: " + e);
+                    System.exit(0);
+                }
             }
         }
     }
