@@ -68,8 +68,6 @@ public abstract class GameObject {
     public void update(){
         if (this.isImmovable == false) {
             
-            //this.updatePolygon();
-
             if (this.isJumping && this.jumpPhase < this.jumpLimit && this.jumpingPeaked == false){
                 this.movementDirection.y = (-this.jumpspeed * (this.jumpLimit - this.jumpPhase));
                 this.jumpPhase++;

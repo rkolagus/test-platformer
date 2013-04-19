@@ -38,15 +38,13 @@ public class CollisionCheck {
         
         /* Collision to below */
         if (gameObject.contains(player.getLowerLeftCorner().addToY(player.gravity.y))
-                || gameObject.contains(player.getLowerRightCorner().addToY(player.gravity.y))) {
+                || gameObject.contains(player.getLowerRightCorner().addToY(player.gravity.y))
+                || gameObject.contains(player.getLowerLeftCorner())
+                || gameObject.contains(player.getLowerRightCorner())) {
             player.isSupported = true;
             player.targetLocation.y = gameObject.location.y - player.size.y - 1.0f;
-            if (gameObject.contains(player.getLowerLeftCorner())
-                    || gameObject.contains(player.getLowerRightCorner())) {
-                player.isSupported = true;
-                player.targetLocation.y = gameObject.location.y - player.size.y - 1.0f;
-            }
         }
+        
         /* Collision to above */
         if (gameObject.contains(player.getUpperLeftCorner().addToY(-1.0f))
                 || gameObject.contains(player.getUpperRightCorner().addToY(-1.0f))) {

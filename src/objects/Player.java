@@ -25,10 +25,11 @@ public class Player extends GameObject {
     public Player(Image image, Vector2D location, Vector2D size){
         super(image, location, size);
         movementDirection = new Vector2D(0.0f, 0.0f);
-        this.gravity = new Vector2D(0.0f, 10.0f);
+        this.gravity = new Vector2D(0.0f, 6.0f);
         this.isImmovable = false;
         this.isSprinting = false;
-        this.jumpspeed = 2.0f;
+        this.jumpspeed = 1.0f;
+        this.jumpLimit = 15;
         this.potentialArea = new Rectangle((this.location.x.intValue() - this.speed.intValue() * 2), 
                                            (this.location.y.intValue() - this.gravity.y.intValue()),
                                            (this.size.x.intValue() + this.speed.intValue() * 4),
