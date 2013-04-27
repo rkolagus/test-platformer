@@ -26,13 +26,17 @@ public class Level {
 
     CollisionCheck collisionCheck = new CollisionCheck();
     ArrayList<ArrayList<LevelSubArea>> subAreaList;
+    
+    BufferedImage combinedImage;
+    Graphics gb;
+
     Player player;
     LevelExit levelExit;
-    Vector2D subAreaSize,
+    Vector2D levelSize, 
+            subAreaSize,
             spawnpoint,
-            exit;
-    
-    final String text = "Level 00 alpha";
+            exit,
+            viewLocation;
     
     public boolean completed = false;
     
@@ -46,20 +50,30 @@ public class Level {
         this.game = game;
         this.spawnpoint = new Vector2D(50, 0);
         this.exit = new Vector2D(-100, -100);
+        this.viewLocation = new Vector2D(0.0f, 0.0f);
         this.subAreaSize = new Vector2D(32*4, 32*4);
         this.subAreaList = new ArrayList<ArrayList<LevelSubArea>>();
         
-        for (int i = 0; i < 10; i++){
-            this.subAreaList.add(new ArrayList<LevelSubArea>());
-            for (int j = 0; j < 10; j++){
-                Vector2D v = new Vector2D(32 * 4 * j, 32 * 4 * i);
-                Vector2D v2 = new Vector2D(32 * 4 * (j + 1), 32 * 4 * (i + 1));
-                this.subAreaList.get(i).add(new LevelSubArea(v, v2));
-            }
-        }
+        LevelFileReader.getLevelSize("gamedata/levels/" + levelFileName, this);
+        this.makeAreaList(levelSize.x.intValue(), levelSize.y.intValue());
 
         try {
             LevelFileReader.readLevelFile("gamedata/levels/" + levelFileName, this);
+            if (combinedImage == null) {
+                combinedImage = new BufferedImage(this.levelSize.x.intValue() * 32, this.levelSize.y.intValue() * 32, 
+                        BufferedImage.TYPE_INT_RGB);
+                gb = combinedImage.getGraphics();
+                int rivi = 0, indeksi = 0;
+                for (ArrayList<LevelSubArea> areaRow : subAreaList) {
+                    for (LevelSubArea area : areaRow) {
+                        for (GameObject object : area.objects) {
+                            gb.drawImage(object.image, object.location.x.intValue(), object.location.y.intValue(), null);
+                        }
+                        indeksi++;
+                    }
+                    rivi++;
+                }
+            }
             } catch (Exception e) {
             throw new Exception("Level file failed to load: " + e);
         }
@@ -78,28 +92,30 @@ public class Level {
         
 
     }
-
-    BufferedImage combinedImage;
-    Graphics gb;
-    public void render(Graphics g) {
-        if (combinedImage == null){
-            combinedImage = new BufferedImage(800, 600, BufferedImage.TYPE_INT_RGB);
-            gb = combinedImage.getGraphics();
-            int rivi = 0, indeksi = 0;
-            for (ArrayList<LevelSubArea> areaRow : subAreaList) {
-                for (LevelSubArea area : areaRow) {
-                    for (GameObject object : area.objects) {
-                        gb.drawImage(object.image, object.location.x.intValue(), object.location.y.intValue(), null);
-                    }
-                    indeksi++;
-                }
-                rivi++;
+    
+    public void makeAreaList(int x, int y){
+        for (int i = 0; i < y; i++){
+            this.subAreaList.add(new ArrayList<LevelSubArea>());
+            for (int j = 0; j < x; j++){
+                Vector2D v = new Vector2D(32 * 4 * j, 32 * 4 * i);
+                Vector2D v2 = new Vector2D(32 * 4 * (j + 1), 32 * 4 * (i + 1));
+                this.subAreaList.get(i).add(new LevelSubArea(v, v2));
             }
         }
-        g.drawImage(combinedImage, 0, 0, null);
+    }
 
-        this.levelExit.render(g);
-        player.render(g);
+    public void render(Graphics g) {
+        
+        if (player.location.x > this.game.width / 2) {
+            this.viewLocation.x = player.location.x - (this.game.width / 2);
+        } else {
+            this.viewLocation.x = 0.0f;
+        }
+        g.drawImage(combinedImage, -this.viewLocation.x.intValue(), 0, null);
+        
+
+        this.levelExit.render(g, this.viewLocation);
+        player.render(g, this.viewLocation);
     }
     
     public void update(Controls controls){

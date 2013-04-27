@@ -54,6 +54,11 @@ public abstract class GameObject {
                 this.size.x.intValue(), this.size.y.intValue(), null);
     }
     
+    public void render(Graphics g, Vector2D viewLocation){
+        g.drawImage(image, (this.location.x.intValue() - viewLocation.x.intValue()), this.location.y.intValue(),
+                this.size.x.intValue(), this.size.y.intValue(), null);
+    }
+    
     public boolean contains(Vector2D vector){
         Polygon checkedArea = new Polygon();
         checkedArea.addPoint(this.getUpperLeftCorner().x.intValue(), this.getUpperLeftCorner().y.intValue());
