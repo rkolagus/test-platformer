@@ -78,4 +78,8 @@ public class Player extends GameObject {
             this.movementDirection.y = this.gravity.y;
         }
     }
+    
+    public final void death(){
+        /* Add death here */
+    }
 }

@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import objects.Block;
 
@@ -17,7 +16,8 @@ public class LevelFileReader {
     
     final static char char_block_01 = 'x',
                       char_spawn = '1',
-                      char_exit = '2';
+                      char_exit = '2',
+                      char_deathblock = 'f';
     
     final static String string_file_end = "end";
     
@@ -67,6 +67,7 @@ public class LevelFileReader {
                 }
                 if (line.contains("" + char_spawn)){
                     level.spawnpoint = new Vector2D(line.indexOf(char_spawn) * 32, lineNumber * 32);
+                    System.out.println("spawnpoint = " + level.spawnpoint);
                 }
                 if (line.contains("" + char_exit)){
                     level.exit = new Vector2D(line.indexOf(char_exit) * 32, lineNumber * 32);
@@ -77,7 +78,6 @@ public class LevelFileReader {
                     level.subAreaList.get(lineNumber / 4).get(lineIndex / 4)
                             .objects.add(new Block(image_block_01, new Vector2D(32 * lineIndex, 32 * lineNumber), 
                             new Vector2D(image_block_01.getWidth(), image_block_01.getHeight())));
-
                     lineIndex++;
                 }
                 lineNumber++;

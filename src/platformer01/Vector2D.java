@@ -16,6 +16,11 @@ public class Vector2D {
         this.y = new Float(y);
     }
     
+    public Vector2D(Vector2D vector){
+        this.x = new Float(vector.x);
+        this.y = new Float(vector.y);
+    }
+    
     public Vector2D add(Vector2D v){
         return new Vector2D(this.x + v.x, this.y + v.y);
     }
@@ -39,6 +44,6 @@ public class Vector2D {
     
     @Override
     public String toString(){
-        return ("( " + this.x + ", " + this.y + ")");
+        return ("(" + this.x + ", " + this.y + ")");
     }
 }

@@ -56,11 +56,14 @@ public class Level {
         
         LevelFileReader.getLevelSize("gamedata/levels/" + levelFileName, this);
         this.makeAreaList(levelSize.x.intValue(), levelSize.y.intValue());
+        this.levelSize.x = this.levelSize.x * 32;
+        this.levelSize.y = this.levelSize.y * 32;
+        System.out.println("this.levelSize = " + this.levelSize);
 
         try {
             LevelFileReader.readLevelFile("gamedata/levels/" + levelFileName, this);
             if (combinedImage == null) {
-                combinedImage = new BufferedImage(this.levelSize.x.intValue() * 32, this.levelSize.y.intValue() * 32, 
+                combinedImage = new BufferedImage(this.levelSize.x.intValue()/* * 32*/, this.levelSize.y.intValue()/* * 32*/, 
                         BufferedImage.TYPE_INT_RGB);
                 gb = combinedImage.getGraphics();
                 int rivi = 0, indeksi = 0;
@@ -107,7 +110,7 @@ public class Level {
     public void render(Graphics g) {
         
         if (player.location.x > this.game.width / 2) {
-            this.viewLocation.x = player.location.x - (this.game.width / 2);
+            this.viewLocation.x = this.player.location.x - (this.game.width / 2);
         } else {
             this.viewLocation.x = 0.0f;
         }
@@ -115,17 +118,17 @@ public class Level {
         
 
         this.levelExit.render(g, this.viewLocation);
-        player.render(g, this.viewLocation);
+        this.player.render(g, this.viewLocation);
     }
     
     public void update(Controls controls){
-        player.move(controls);
-        player.isSupported = false;
-        player.updatePotentialArea();
-        player.updateArea();
+        this.player.move(controls);
+        this.player.isSupported = false;
+        this.player.updatePotentialArea();
+        this.player.updateArea();
         for (ArrayList<LevelSubArea> areaColumn : subAreaList) {
             for (LevelSubArea area: areaColumn) {
-                if (area.overlaps(player.potentialArea)) {
+                if (area.overlaps(this.player.potentialArea)) {
                     for (GameObject gameObject : area.objects) {
                         //gameObject.update();
                         CollisionCheck.playerCheck(this.player, gameObject);
@@ -136,6 +139,14 @@ public class Level {
         }
         if (CollisionCheck.intersects(player, levelExit)){
             this.exitLevel();
+        }
+        if (player.location.y > this.levelSize.y){
+            player.death();
+            System.out.println("this.spawnpoint   = " + this.spawnpoint + 
+                               "player.spawnpoint = " + this.player.spawnpoint);
+            this.player.location = this.player.spawnpoint;
+            this.player.targetLocation = this.player.spawnpoint;
+            this.player.spawnpoint = new Vector2D(this.player.location);
         }
         player.update();
     }

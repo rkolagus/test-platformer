@@ -18,9 +18,13 @@ public class Platformer01 implements Runnable {
     Level level;
     
     int levelCounter;
-    final String levelNames[] = {"level_01.txt", 
-                                 "level_02.txt", 
+ 
+    final String levelNames[] = {"level_01.txt",
+                                 "topilevel_02.txt",
+                                 "topilevel_01.txt",
+                                 "level_02.txt",
                                  "level_03.txt"};
+                                 
     final int width = 800,
             height = 600;
     long desiredFPS = 60,

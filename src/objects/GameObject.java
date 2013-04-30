@@ -33,7 +33,7 @@ public abstract class GameObject {
         this.image = image;
         this.size = size;
         this.location = location;
-        this.spawnpoint = location;
+        this.spawnpoint = new Vector2D(location);
         this.movementDirection = new Vector2D(0.0f, 0.0f);
         this.targetLocation = location;
         this.gravity = new Vector2D(0.0f, 0.0f);
